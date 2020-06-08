@@ -58,7 +58,7 @@ classdef CocoApi
       %  coco      - initialized coco object
       fprintf('Loading and preparing annotations... '); clk=clock;
       if(isstruct(annFile)), coco.data=annFile; else
-        coco.data=gason(fileread(annFile)); end
+        coco.data=jsondecode(fileread(annFile)); end
       is.imgIds = [coco.data.images.id]';
       is.imgIdsMap = makeMap(is.imgIds);
       if( isfield(coco.data,'annotations') )
@@ -291,7 +291,7 @@ classdef CocoApi
       % OUTPUTS
       %  cocoRes    - initialized results API
       fprintf('Loading and preparing results...     '); clk=clock;
-      cdata=coco.data; R=gason(fileread(resFile)); m=length(R);
+      cdata=coco.data; R=jsondecode(fileread(resFile)); m=length(R);
       valid=ismember([R.image_id],[cdata.images.id]);
       if(~all(valid)), error('Results provided for invalid images.'); end
       t={'segmentation','bbox','keypoints','caption'}; t=t{isfield(R,t)};
